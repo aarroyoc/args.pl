@@ -1,0 +1,21 @@
+name: Test
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Checkout Scryer Prolog
+        uses: actions/checkout@v3
+        with:
+          repository: mthom/scryer-prolog
+          path: scryer-prolog
+      - name: Compile Scryer Prolog
+        run: cargo build --release
+        working-directory: scryer-prolog
+      - name: Install Scryer Prolog
+        run: sudo cp scryer-prolog/target/release/scryer-prolog /usr/bin/scryer-prolog
+      - name: Test
+        run: scryer-prolog args -g "args:test."
